@@ -1,13 +1,10 @@
-
-# Example of using the Rttov class to call RTTOV for multiple instruments
-# with the emissivity and BRDF atlases
-
-# Three Rttov instances are created representing three instruments
+#!/usr/bin/env python2.7
+# sorry, 2.7 for now, you can run 2to3 on rttov, but I need to get my scripts together to automate that a bit.
+rttovPath = "/discover/nobackup/bkarpowi/rt/rttov12_gcc7.2/"
 import matplotlib
 matplotlib.use('Agg')
 import pyrttov
 import example_data as ex
-
 import numpy as np
 import os
 import sys
@@ -19,6 +16,10 @@ import matplotlib.cm as mplcm
 import matplotlib.colors as colors
 from cycler import cycler
 import h5py
+
+pyRttovPath = os.path.join(rttovPath,'wrapper')
+if not pyRttovPath in sys.path:
+    sys.path.append(pyRttovPath)
 
 def calculateWeightingFunctions(chan_list, rttovInstance, myProfiles):
     wf = []
@@ -71,7 +72,6 @@ def plotWeightingFunctions(chan_list, profiles, wf, instrument, wavenumbers):
     plt.savefig(instrument+'_weighting_functions_pcolor.png')
 
 
-rttov_installdir = '../'
 
 if __name__ == '__main__':
 
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     # - enable the store_trans wrapper option for airs to provide access to
     #   RTTOV transmission structure
 
-    iasiRttov.FileCoef = '{}/{}'.format(rttov_installdir,
+    iasiRttov.FileCoef = '{}/{}'.format(rttovPath,
                                            "rtcoef_rttov12/rttov9pred101L/rtcoef_metop_2_iasi_so2.H5")
 #                                            "rtcoef_rttov12/rttov8pred101L/rtcoef_metop_2_iasi.H5")
     iasiRttov.Options.AddInterp = True
@@ -158,7 +158,7 @@ if __name__ == '__main__':
     iasiRttov.Options.StoreTrans = True
     iasiRttov.Options.VerboseWrapper = True
     
-    crisRttov.FileCoef = '{}/{}'.format(rttov_installdir,
+    crisRttov.FileCoef = '{}/{}'.format(rttovPath,
                                         "rtcoef_rttov12/rttov9pred101L/rtcoef_jpss_0_cris_so2.H5")
     crisRttov.Options.AddInterp = True
     crisRttov.Options.AddSolar = True
@@ -167,7 +167,7 @@ if __name__ == '__main__':
     crisRttov.Options.StoreTrans = True
     crisRttov.Options.VerboseWrapper = True
 
-    crisFsrRttov.FileCoef = '{}/{}'.format(rttov_installdir,
+    crisFsrRttov.FileCoef = '{}/{}'.format(rttovPath,
                                         "rtcoef_rttov12/rttov9pred101L/rtcoef_jpss_0_cris-fsr_so2.H5")
     crisFsrRttov.Options.AddInterp = True
     crisFsrRttov.Options.AddSolar = True
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     crisFsrRttov.Options.StoreTrans = True
     crisFsrRttov.Options.VerboseWrapper = True
 
-    airsRttov.FileCoef = '{}/{}'.format(rttov_installdir,
+    airsRttov.FileCoef = '{}/{}'.format(rttovPath,
                                        "rtcoef_rttov12/rttov9pred101L/rtcoef_eos_2_airs_so2.H5")
     airsRttov.Options.AddInterp = True
     airsRttov.Options.StoreTrans = True
