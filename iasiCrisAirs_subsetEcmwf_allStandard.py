@@ -1,6 +1,8 @@
-#!/usr/bin/env python2.7
-# sorry, 2.7 for now, you can run 2to3 on rttov, but I need to get my scripts together to automate that a bit.
-rttovPath = "/discover/nobackup/bkarpowi/rt/rttov12_gcc7.2/"
+#!/usr/bin/env python3
+import  configparser
+pathInfo = configparser.ConfigParser()
+pathInfo.read('rttov.cfg')
+rttovPath = pathInfo['RTTOV']['rttovPath']
 import matplotlib
 matplotlib.use('Agg')
 import pyrttov

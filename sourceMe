@@ -1,3 +1,4 @@
-source /usr/share/modules/init/csh
-module use -a /home/mathomp4/modulefiles
-module load python/anaconda/5.3.0/2.7/latest
+#source /usr/share/modules/init/csh
+#module use -a /home/mathomp4/modulefiles
+#module load python/anaconda/5.3.0/2.7/latest
+source ~/bin/go3.csh 

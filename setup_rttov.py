@@ -26,8 +26,10 @@ def main( a ):
     print("Untarring rttov")
     # untar rttov
     if(a.version =='latest'):
+        print(tarballPath)
         rttovVersions = glob.glob( os.path.join(tarballPath,'rttov*.tar.gz'))
         rttovVersions.sort()
+        print(rttovVersions)
         rttovSelected = rttovVersions[-1]
     else:  rttovSelected = glob.glob( os.path.join(tarballPath,'rttov'+a.version+'*.tar.gz'))[-1]
 

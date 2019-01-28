@@ -1,6 +1,8 @@
-#!/usr/bin/env python2.7
-# sorry, 2.7 for now, you can run 2to3 on rttov, but I need to get my scripts together to automate that a bit.
-rttovPath = "/discover/nobackup/bkarpowi/rt/rttov12_gcc7.2/"
+#!/usr/bin/env python3
+import  configparser
+pathInfo = configparser.ConfigParser()
+pathInfo.read('rttov.cfg')
+rttovPath = pathInfo['RTTOV']['rttovPath']
 import matplotlib
 matplotlib.use('Agg')
 import numpy as np
@@ -275,6 +277,7 @@ if __name__ == '__main__':
     iasiRttov.Options.CO2Data = True
     iasiRttov.Options.OzoneData = True
     iasiRttov.Options.StoreTrans = True
+    iasiRttov.Options.StoreRad = True
     iasiRttov.Options.VerboseWrapper = True
     
     crisRttov.FileCoef = '{}/{}'.format(rttovPath,
@@ -284,6 +287,7 @@ if __name__ == '__main__':
     crisRttov.Options.CO2Data = True
     crisRttov.Options.OzoneData = True
     crisRttov.Options.StoreTrans = True
+    crisRttov.Options.StoreRad = True
     crisRttov.Options.VerboseWrapper = True
 
     crisFsrRttov.FileCoef = '{}/{}'.format(rttovPath,
@@ -293,6 +297,7 @@ if __name__ == '__main__':
     crisFsrRttov.Options.CO2Data = True
     crisFsrRttov.Options.OzoneData = True
     crisFsrRttov.Options.StoreTrans = True
+    crisFsrRttov.Options.StoreRad = True
     crisFsrRttov.Options.VerboseWrapper = True
 
     airsRttov.FileCoef = '{}/{}'.format(rttovPath,
@@ -306,6 +311,7 @@ if __name__ == '__main__':
     airsRttov.Options.CO2Data = True
     airsRttov.Options.OzoneData = True
     airsRttov.Options.StoreTrans = True
+    airsRttov.Options.StoreRad = True
     airsRttov.Options.VerboseWrapper = True
 
     # Load the instruments: for cris and airs do not supply a channel list and
@@ -338,6 +344,7 @@ if __name__ == '__main__':
     except pyrttov.RttovError as e:
         sys.stderr.write("Error running RTTOV direct model: {!s}".format(e))
         sys.exit(1)
+    """
     print("calc weighting functions.")
     iasi_wf    = calculateWeightingFunctions(chan_list_iasi, iasiRttov,    myProfiles)
     cris_wf    = calculateWeightingFunctions(chan_list_cris, crisRttov,    myProfiles)
@@ -349,8 +356,29 @@ if __name__ == '__main__':
         for l in range(iasi_wf.shape[1]):
             correlated2Ozone[l,c] = np.corrcoef(myProfiles.O3[:,l],iasi_wf[:,l,c])[0,1]
     print(correlated2Ozone)
+    """
     #IPython.embed()
     #sys.exit(1)
+    iasi_corr = np.corrcoef(iasiRttov.Bt)
+    airs_corr = np.corrcoef(airsRttov.Bt)
+
+    cris_corr = np.corrcoef(crisRttov.Bt)
+    fsr_corr = np.corrcoef(crisFsrRttov.Bt)
+
+    plt.matshow(iasi_corr)
+    plt.savefig('iasi_corr.png')
+   
+    plt.matshow(airs_corr)
+    plt.savefig('airs_corr.png')
+
+    plt.matshow(cris_corr)
+    plt.savefig('cris_corr.png')
+    
+    plt.matshow(fsr_corr)
+    plt.savefig('fsr_corr.png')
+
+
+    """
     for i in range(nprofiles):
 
         print('Plotting IASI')    
@@ -380,5 +408,6 @@ if __name__ == '__main__':
         plotJacobians(chan_list_airs, myProfiles, airsRttov.TK[i,:,:],    'airs', '{:04d}'.format(i+1), wavenumbers,'temperature')
         plotJacobians(chan_list_airs, myProfiles, airsRttov.QK[i,:,:],    'airs', '{:04d}'.format(i+1), wavenumbers,'water')
 
+    """
     plotProfilesO3(myProfiles)   
     plotProfilesT(myProfiles)   

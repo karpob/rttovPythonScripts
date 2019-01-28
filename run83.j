@@ -25,4 +25,5 @@
 #BSUB -e m2m1c.log.o%J
 # ------------------------------
 source  /discover/nobackup/bkarpowi/github/rttovPythonScripts/sourceMe 
-python /discover/nobackup/bkarpowi/github/rttovPythonScripts/iasiCrisAirs_inBufrSubset_allStandard.py
+which python3 
+python3 /discover/nobackup/bkarpowi/github/rttovPythonScripts/iasiCrisAirs_inBufrSubset_allStandard.py
